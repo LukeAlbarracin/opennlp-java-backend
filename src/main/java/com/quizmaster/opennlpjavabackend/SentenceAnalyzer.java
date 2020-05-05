@@ -17,6 +17,9 @@ import opennlp.tools.postag.POSTaggerME;
 import opennlp.tools.tokenize.TokenizerME;
 import opennlp.tools.tokenize.TokenizerModel;
 import opennlp.tools.util.Span;
+
+import org.springframework.core.io.ClassPathResource;
+
 /**
  * Inspiration from 2 OpenNLP (Natural Language Processing) tutorials : 
  * https://www.baeldung.com/apache-open-nlp
@@ -32,36 +35,38 @@ public final class SentenceAnalyzer {
             System.out.println(array[i]);
         }
     }
+
     public String[] detectSentence() throws IOException {
-        InputStream stream = new FileInputStream("en-token.bin");
+        //InputStream stream = new FileInputStream("en-token.bin");
+        InputStream stream = new ClassPathResource("en-token.bin").getInputStream(); 
         TokenizerModel model = new TokenizerModel(stream);
         TokenizerME tokenizer = new TokenizerME(model);
         String[] tokens = tokenizer.tokenize(input);
         return tokens;   
     }
     public Span[] detectPerson() throws IOException {
-        InputStream stream = new FileInputStream("en-ner-person.bin");
+        InputStream stream = new ClassPathResource("en-ner-person.bin").getInputStream();
         TokenNameFinderModel tFinder = new TokenNameFinderModel(stream);
         NameFinderME nFinder = new NameFinderME(tFinder);
         Span[] spans = nFinder.find(this.detectSentence());
         return spans;
     }
     public String[] partOfSpeechTags() throws IOException {
-        InputStream stream = new FileInputStream("en-pos-perceptron.bin");
+        InputStream stream = new ClassPathResource("en-pos-perceptron.bin").getInputStream();
         POSModel model = new POSModel(stream);
         POSTaggerME tagger = new POSTaggerME(model);
         String[] tags = tagger.tag(detectSentence());
         return fixUnmarkedTags(tags);
     }
     public Span[] chunkSentences() throws IOException {
-        InputStream stream = new FileInputStream("en-chunker.bin");
+        InputStream stream = new ClassPathResource("en-chunker.bin").getInputStream();
         ChunkerModel model = new ChunkerModel(stream);
         ChunkerME chunker = new ChunkerME(model);
         Span[] spans = chunker.chunkAsSpans(detectSentence(), partOfSpeechTags());
         return spans;
     }
     public List<String> getTrueMeanings() throws IOException {
-        InputStream stream = new FileInputStream("en-lemmatizer.dict");
+        InputStream stream = new ClassPathResource("en-lemmatizer.dict").getInputStream();
         DictionaryLemmatizer lem = new DictionaryLemmatizer(stream);
         List<String> lemmas = new LinkedList<String> (Arrays.asList(lem.lemmatize(detectSentence(), partOfSpeechTags())));
         lemmas.remove(new String("O"));
@@ -103,7 +108,7 @@ public final class SentenceAnalyzer {
             int endIndex = findEndOfPhrase(spans, 0);
             return concatStrings(sentence, 0, endIndex)
             + findRemainingPhrase(endIndex)
-            + "?";
+            + ";" + concatStrings(sentence, endIndex, detectSentence().length);
         } catch (IOException exception) {
             System.out.println(exception);
             return "ERROR IN GENERATING QUESTION";

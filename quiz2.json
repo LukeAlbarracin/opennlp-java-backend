@@ -1,0 +1,12 @@
+{
+    "quiz": {
+        "id": "123",
+        "name": "quiz3",
+        "questions": {
+            "question1": {
+                "id": "456",
+                "name": "question456"
+            }
+        }
+    }
+}
