@@ -26,12 +26,12 @@ deploy:
 	./mvnw -DskipTests package appengine:deploy
 
 step0:
-	./0_init.sh
+	./infra/0_init.sh
 step1:
-	./1_gsutil_makebucket.sh
+	./infra/1_gsutil_makebucket.sh
 step2:
-	./2_gsutil_copyfiles.sh
+	./infra/2_gsutil_copyfiles.sh
 step3:
-	./3_add_local_quiz.sh
+	./infra/3_add_local_quiz.sh
 stepz:
-#./z_cleanup.sh
+	./infra/z_cleanup.sh
