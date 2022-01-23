@@ -1,4 +1,4 @@
-# opennlp-java-backend (Backend for Quizmaster)
+# QuizMaster (Backend)
 
 ## A Quizlet inspired flashcard application which uses NLP to generate questions
 My project is a full-stack app written in Java.
@@ -9,7 +9,7 @@ For one of my CS125 class at the University of Illinois Urbana-Champaign we were
 ## Technology Details
 
 ### Frontend
-The frontend is implemented as an Android application in Java. It uses the [Volley Library](https://github.com/google/volley) to perform HTTP requests.
+The frontend is implemented as an Android application in Java. It uses the [Volley Library](https://github.com/google/volley) to perform HTTP requests. The code for the frontend can be found [here](https://github.com/LukeAlbarracin/QuizMaster)
 
 ### Backend
 The backend uses the [Google Cloud Platform (GCP)](https://cloud.google.com/docs) and also uses [Spring Boot](https://spring.io/projects/spring-boot). More importantly, it uses the [Apache OpenNLP library](https://opennlp.apache.org/) to perform sentence analysis to send information back to the client.
